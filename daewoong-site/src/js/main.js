@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Overlay Menu ---
     const menuBtn = document.getElementById('menuBtn');
     const closeBtn = document.getElementById('overlayClose');
     const overlayMenu = document.getElementById('overlayMenu');
@@ -13,21 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
     menuBtn?.addEventListener('click', () => toggleMenu(true));
     closeBtn?.addEventListener('click', () => toggleMenu(false));
     
-    // ESC key to close
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlayMenu.classList.contains('is-open')) {
             toggleMenu(false);
         }
     });
 
-    // --- Side Navigation Active State on Scroll ---
     const sideLinks = document.querySelectorAll('.side-nav .side-link');
     const sections = Array.from(sideLinks).map(link => {
         const id = link.getAttribute('href').substring(1);
         return document.getElementById(id);
     }).filter(Boolean);
 
-    // 기본 active NEWS
     sideLinks.forEach(link => link.classList.remove('active'));
     if (sideLinks[0]) sideLinks[0].classList.add('active');
 
@@ -42,25 +38,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, {
-            rootMargin: '-50% 0px -50% 0px', // viewport의 중앙 지점을 기준으로 판별
+            rootMargin: '-50% 0px -50% 0px',
             threshold: 0
         });
 
         sections.forEach(section => observer.observe(section));
     }
 
-    // 클릭시 슬라이드 형태로 이동
     sideLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const id = this.getAttribute('href').substring(1);
             const target = document.getElementById(id);
             if (target) {
-                const headerOffset = 70; // 헤더 높이
+                const headerOffset = 70;
                 const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
                 const offsetPosition = elementPosition - headerOffset;
 
-                // 슬라이드 형태로 이동 (requestAnimationFrame)
                 const startY = window.scrollY;
                 const distance = offsetPosition - startY;
                 const duration = 600;
@@ -85,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 페이지 진입 시 NEWS로 자연스럽게 스크롤
     window.addEventListener('load', () => {
         const newsSection = document.getElementById('news');
         if (newsSection) {
@@ -116,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 비즈니스 탭 전환 효과 (텍스트 없이 이미지만)
     document.addEventListener('DOMContentLoaded', () => {
         const tabs = document.querySelectorAll('.business-tabs .tab');
         const images = document.querySelectorAll('.business-images .biz-img');
@@ -136,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // business swiper 탭 클릭 시 이미지 전환
     document.addEventListener('DOMContentLoaded', () => {
         const paginations = document.querySelectorAll('.business-pagination li');
         const slides = document.querySelectorAll('.business-slide');
@@ -156,11 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 비즈니스 탭 hover 시 이미지 및 active 탭 전환 (마우스 오버 후 상태 유지)
     const tabs = document.querySelectorAll('.business-tabs .tab');
     const images = document.querySelectorAll('.biz-img');
 
-    // 기본 이미지 및 탭 세팅
     images.forEach(img => {
         img.classList.toggle('active', img.dataset.tab === 'talent');
     });
@@ -171,19 +160,15 @@ document.addEventListener('DOMContentLoaded', () => {
     tabs.forEach(tab => {
         tab.addEventListener('mouseenter', () => {
             const tabName = tab.dataset.tab;
-            // 이미지 전환
             images.forEach(img => {
                 img.classList.toggle('active', img.dataset.tab === tabName);
             });
-            // 탭 active 전환
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
         });
-        // 마우스 leave 이벤트 제거 (상태 유지)
     });
 });
 
-// CULTURE 섹션 이미지 교체 (레이아웃 유지 & 깜빡임 없음)
 const quoteImage = document.querySelector(".image-block.with-quote img");
 const links = document.querySelectorAll(".icon-links a");
 let fadeTimer;
@@ -193,7 +178,6 @@ links.forEach(link => {
     const newSrc = e.currentTarget.dataset.img;
     if (!newSrc || quoteImage.src.includes(newSrc)) return;
 
-    // 미리 로드
     const preload = new Image();
     preload.src = newSrc;
 
@@ -210,7 +194,6 @@ links.forEach(link => {
   });
 });
 
-// CULTURE 섹션 이미지 & 텍스트 동시 전환 (깜빡임 없음)
 const quoteBlock = document.querySelector(".image-block.with-quote");
 const quoteImg = quoteBlock.querySelector("img");
 const quoteText = quoteBlock.querySelector(".quote-overlay p");
@@ -221,12 +204,10 @@ document.querySelectorAll(".icon-links a").forEach(link => {
     const newQuote = e.currentTarget.dataset.quote;
     if (!newSrc || quoteImg.src.includes(newSrc)) return;
 
-    // 미리 로드
     const preload = new Image();
     preload.src = newSrc;
 
     preload.onload = () => {
-      // 부드러운 페이드
       quoteImg.style.transition = "0.1s ease-in-out";
       quoteText.style.transition = "0.1s ease-in-out";
       quoteImg.style.opacity = 0.2;
@@ -243,25 +224,19 @@ document.querySelectorAll(".icon-links a").forEach(link => {
 });
 
 
-// === GNB 드롭다운 (안정 & 세련된 GSAP 버전) ===
 
-// 먼저 GSAP이 로드되어 있는지 확인
 if (typeof gsap === "undefined") {
   console.error("⚠️ GSAP이 로드되지 않았습니다. index.html의 body 끝에 CDN을 추가하세요:");
   console.warn('<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>');
 }
 
-// 모든 메뉴 항목 순회
 document.querySelectorAll(".menu-item").forEach((li) => {
   const panel = li.querySelector(".dropdown-panel");
-  if (!panel) return; // 서브 메뉴 없는 경우 패스
+  if (!panel) return;
 
-  // 초기 상태 숨김
   gsap.set(panel, { height: 0, autoAlpha: 0, overflow: "hidden" });
 
-  // hover 시 드롭다운 열기
   li.addEventListener("mouseenter", () => {
-    // 다른 메뉴 닫기
     document.querySelectorAll(".menu-item .dropdown-panel").forEach((p) => {
       if (p !== panel) {
         gsap.to(p, {
@@ -273,7 +248,6 @@ document.querySelectorAll(".menu-item").forEach((li) => {
       }
     });
 
-    // 현재 메뉴 열기
     gsap.killTweensOf(panel);
     gsap.to(panel, {
       height: "auto",
@@ -286,7 +260,6 @@ document.querySelectorAll(".menu-item").forEach((li) => {
     });
   });
 
-  // 마우스가 벗어났을 때 닫기
   li.addEventListener("mouseleave", () => {
     gsap.killTweensOf(panel);
     gsap.to(panel, {
@@ -301,7 +274,7 @@ document.querySelectorAll(".menu-item").forEach((li) => {
   });
 });
 
-// 전체 네비게이션에서 벗어나면 모든 메뉴 닫기
+// nav
 const nav = document.querySelector(".main-nav");
 if (nav) {
   nav.addEventListener("mouseleave", () => {
@@ -320,17 +293,14 @@ if (nav) {
 }
 
 
-// === GSAP 드롭다운 복구용 안정 버전 ===
+// menu
 document.querySelectorAll(".menu-item").forEach(li => {
   const panel = li.querySelector(".dropdown-panel");
   if (!panel) return;
 
-  // 초기 상태
   gsap.set(panel, { height: 0, autoAlpha: 0, overflow: "hidden", display: "block" });
 
-  // hover 시 열기
   li.addEventListener("mouseenter", () => {
-    // 다른 메뉴 닫기
     document.querySelectorAll(".dropdown-panel").forEach(p => {
       if (p !== panel) {
         gsap.to(p, {
@@ -342,7 +312,6 @@ document.querySelectorAll(".menu-item").forEach(li => {
       }
     });
 
-    // 현재 메뉴 열기
     const h = panel.scrollHeight;
     gsap.killTweensOf(panel);
     gsap.to(panel, {
@@ -354,7 +323,6 @@ document.querySelectorAll(".menu-item").forEach(li => {
     });
   });
 
-  // 마우스 벗어나면 닫기
   li.addEventListener("mouseleave", () => {
     gsap.killTweensOf(panel);
     gsap.to(panel, {
@@ -367,7 +335,7 @@ document.querySelectorAll(".menu-item").forEach(li => {
   });
 });
 
-// === 스크롤 시 헤더 그림자 효과 ===
+// 스크롤 이벤트
 window.addEventListener("scroll", () => {
   if (window.scrollY > 40) {
     document.body.classList.add("scrolled");
@@ -378,15 +346,13 @@ window.addEventListener("scroll", () => {
 
 
 
-// === GSAP 전역 섹션 모션 ===
+// 헤더
 window.addEventListener("load", () => {
   gsap.registerPlugin(ScrollTrigger);
 
-  // HEADER & SIDENAV
   gsap.from(".site-header", { y: -60, opacity: 0, duration: 0.8, ease: "power3.out" });
   gsap.from(".side-nav", { x: -40, opacity: 0, duration: 1, delay: 0.3, ease: "power3.out" });
 
-  // NEWS SECTION
   gsap.from(".section1 .main, .section1 .side > *", {
     scrollTrigger: {
       trigger: ".section1",
@@ -401,7 +367,6 @@ window.addEventListener("load", () => {
     stagger: 0.15
   });
 
-  // CULTURE SECTION
   gsap.from("#culture .text-block", {
     scrollTrigger: { trigger: "#culture", start: "top 80%", once: true },
     x: -60,
@@ -493,7 +458,7 @@ window.addEventListener("load", () => {
 
 
 
-// === SIDE NAV ACTIVE 표시 (ScrollTrigger 기반) ===
+// SIDE NAV ACTIVE
 window.addEventListener("load", () => {
   const navLinks = gsap.utils.toArray(".side-nav a");
 
