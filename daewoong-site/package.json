@@ -1,0 +1,22 @@
+{
+  "name": "daewoong-site",
+  "version": "1.0.0",
+  "description": "A website for Daewoong, showcasing company information, products, research and development, ESG, investment information, and news.",
+  "main": "src/index.html",
+  "scripts": {
+    "build": "npm run build-css && npm run build-js",
+    "build-css": "node-sass src/scss/main.scss src/css/main.css",
+    "build-js": "babel src/js/main.js -o src/js/bundle.js",
+    "start": "live-server src"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "node-sass": "^6.0.0",
+    "babel-cli": "^6.26.0",
+    "live-server": "^1.2.1"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0"
+  }
+}

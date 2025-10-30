@@ -1,0 +1,125 @@
+// main.scss
+
+// Variables
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$font-stack: 'Helvetica Neue', sans-serif;
+
+// Mixins
+@mixin transition($property) {
+  transition: $property 0.3s ease;
+}
+
+// Global Styles
+body {
+  font-family: $font-stack;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+// Header Styles
+.site-header {
+  background-color: $primary-color;
+  padding: 20px 0;
+  
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .logo {
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .main-nav {
+      a {
+        color: white;
+        text-decoration: none;
+        margin: 0 15px;
+        @include transition(color);
+        
+        &:hover {
+          color: $secondary-color;
+        }
+      }
+    }
+    
+    .menu-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+  }
+}
+
+// Overlay Menu Styles
+.overlay-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none; // Hidden by default
+  
+  &.active {
+    display: block; // Show when active
+  }
+  
+  .overlay-inner {
+    color: white;
+    padding: 20px;
+    
+    .overlay-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .overlay-nav {
+      ul {
+        list-style: none;
+        padding: 0;
+        
+        li {
+          margin: 15px 0;
+          
+          a {
+            color: white;
+            text-decoration: none;
+            @include transition(color);
+            
+            &:hover {
+              color: $secondary-color;
+            }
+          }
+        }
+      }
+    }
+    
+    .overlay-extra {
+      margin-top: 20px;
+      
+      .overlay-btn {
+        display: block;
+        margin: 10px 0;
+        color: $secondary-color;
+        text-decoration: none;
+        @include transition(color);
+        
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}
